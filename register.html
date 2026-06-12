@@ -1,0 +1,1003 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="أكاديمية أشبال الجديدة - التسجيل ولوحة الإدارة" />
+    <title>التسجيل والإدارة | أكاديمية أشبال الجديدة</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              naa: { ink: "#0B0F14", blue: "#1e3a8a", sky: "#3b82f6", green: "#1B5E20", maroon: "#7A0C12", gold: "#d4af37" },
+            },
+            boxShadow: { soft: "0 16px 50px rgba(0,0,0,0.35)" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+      body { font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+      .focus-ring:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35); }
+      .tab-active { border-bottom: 2px solid #3b82f6; color: #3b82f6; }
+      .tab-inactive { color: rgba(255,255,255,0.5); }
+      .tab-inactive:hover { color: rgba(255,255,255,0.8); }
+      @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+      .fade-in { animation: fadeIn 0.4s ease-out; }
+      .admin-tab { display: none; }
+      .admin-tab.active { display: block; }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-naa-ink text-white">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-naa-ink/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <a href="index.html" class="group inline-flex items-center gap-3 rounded-2xl px-2 py-2 hover:bg-white/5 focus-ring">
+          <span class="grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 shadow-soft">
+            <img src="assets/image_1.png" alt="Logo" class="h-full w-full object-contain p-1" />
+          </span>
+          <span class="leading-tight hidden sm:block">
+            <span class="block text-sm font-extrabold">أكاديمية أشبال الجديدة</span>
+            <span class="block text-xs text-white/70">التسجيل والإدارة</span>
+          </span>
+        </a>
+
+        <nav class="flex items-center gap-2">
+          <a href="index.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-gold transition-all">
+            <i class="fa-solid fa-house text-naa-gold"></i><span>الرئيسية</span>
+          </a>
+          <a href="media.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-sky transition-all">
+            <i class="fa-solid fa-photo-film text-naa-sky"></i><span>المعرض</span>
+          </a>
+          <a href="register.html" class="inline-flex items-center gap-2 rounded-xl border border-naa-green bg-white/10 px-3 py-2 text-xs sm:text-sm font-extrabold shadow-soft">
+            <i class="fa-solid fa-user-gear text-naa-green"></i><span>التسجيل</span>
+          </a>
+        </nav>
+
+        <div id="userInfo" class="hidden items-center gap-2">
+          <span class="text-xs text-white/70" id="userName"></span>
+          <button onclick="logout()" class="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-extrabold hover:bg-white/10 transition-all">
+            <i class="fa-solid fa-right-from-bracket"></i> خروج
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- قسم تسجيل الدخول / التسجيل -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <section id="authSection" class="min-h-[80vh] flex items-center justify-center py-12 px-4">
+        <div class="w-full max-w-xl">
+          <div class="flex border-b border-white/10 mb-8">
+            <button onclick="switchTab('login')" id="tabLogin" class="flex-1 pb-3 text-sm font-extrabold tab-active transition-all">
+              <i class="fa-solid fa-right-to-bracket ms-2"></i>تسجيل الدخول
+            </button>
+            <button onclick="switchTab('register')" id="tabRegister" class="flex-1 pb-3 text-sm font-extrabold tab-inactive transition-all">
+              <i class="fa-solid fa-user-plus ms-2"></i>تسجيل لاعب جديد
+            </button>
+          </div>
+
+          <!-- تسجيل الدخول -->
+          <div id="loginPanel" class="fade-in">
+            <div class="rounded-[3rem] border border-white/10 bg-white/[0.02] p-10 shadow-soft backdrop-blur-sm">
+              <header class="mb-8 text-center">
+                <div class="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-naa-green/20 border border-naa-green/30">
+                  <i class="fa-solid fa-shield-halved text-naa-green text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-black text-white">تسجيل الدخول</h1>
+                <p class="mt-2 text-sm text-white/70">أدخل بياناتك للوصول إلى حسابك</p>
+              </header>
+
+              <form id="loginForm" class="grid gap-5" novalidate>
+                <div>
+                  <label for="loginPhone" class="block text-sm font-extrabold">رقم الجوال</label>
+                  <input id="loginPhone" type="tel" inputmode="tel" placeholder="05xx xxx xxx" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                </div>
+                <div>
+                  <label for="loginPassword" class="block text-sm font-extrabold">كلمة المرور</label>
+                  <input id="loginPassword" type="password" placeholder="••••••••" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                </div>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-naa-green px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring transition-all">
+                  <i class="fa-solid fa-lock"></i> تسجيل الدخول
+                </button>
+              </form>
+
+              <div id="loginFeedback" class="mt-4 hidden rounded-2xl border px-4 py-3 text-sm font-extrabold" role="status"></div>
+
+
+            </div>
+          </div>
+
+          <!-- تسجيل لاعب جديد -->
+          <div id="registerPanel" class="hidden fade-in">
+            <div class="rounded-[3rem] border border-white/10 bg-white/[0.02] p-10 shadow-soft backdrop-blur-sm">
+              <header class="mb-8 text-center">
+                <div class="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl bg-naa-sky/20 border border-naa-sky/30">
+                  <i class="fa-solid fa-user-plus text-naa-sky text-2xl"></i>
+                </div>
+                <h1 class="text-3xl font-black text-white">تسجيل لاعب جديد</h1>
+                <p class="mt-2 text-sm text-white/70">أهلاً بك في أكاديمية أشبال الجديدة</p>
+              </header>
+
+              <form id="playerForm" class="grid gap-5" novalidate>
+                <div>
+                  <label for="playerName" class="block text-sm font-extrabold">الاسم الثلاثي</label>
+                  <input id="playerName" type="text" placeholder="مثال: أحمد محمد قلالوة" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                </div>
+                <div>
+                  <label for="playerPhone" class="block text-sm font-extrabold">رقم الجوال</label>
+                  <input id="playerPhone" type="tel" inputmode="tel" placeholder="05xx xxx xxx" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                </div>
+                <div>
+                  <label for="playerDOB" class="block text-sm font-extrabold">تاريخ الميلاد</label>
+                  <input id="playerDOB" type="date" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-5 py-4 text-white focus-ring uppercase font-semibold" />
+                </div>
+                <div>
+                  <label for="playerPassword" class="block text-sm font-extrabold">كلمة المرور</label>
+                  <input id="playerPassword" type="password" placeholder="أنشئ كلمة مرور" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                </div>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-naa-sky px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring transition-all">
+                  <i class="fa-solid fa-paper-plane"></i> إرسال طلب الانضمام
+                </button>
+              </form>
+
+              <div id="registerFeedback" class="mt-4 hidden rounded-2xl border px-4 py-3 text-sm font-extrabold" role="status"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <!-- لوحة الإدارة -->
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <section id="adminSection" class="hidden py-12">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between mb-8">
+            <div>
+              <h2 class="text-3xl font-extrabold">
+                <i class="fa-solid fa-user-shield ms-2 text-naa-gold"></i> لوحة الإدارة
+              </h2>
+              <p class="mt-2 text-white/70">إدارة نجوم الأسبوع، النتائج، المرشحين، والوسائط</p>
+            </div>
+            <button onclick="logout()" class="inline-flex items-center gap-2 rounded-2xl bg-naa-maroon px-4 py-2 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+              <i class="fa-solid fa-right-from-bracket"></i> تسجيل خروج
+            </button>
+          </header>
+
+          <!-- تبويبات لوحة الإدارة -->
+          <div class="flex border-b border-white/10 mb-6 overflow-x-auto">
+            <button onclick="switchAdminTab('stars')" id="adminTabStars" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-active whitespace-nowrap">
+              <i class="fa-solid fa-star ms-2"></i>نجوم الأسبوع
+            </button>
+            <button onclick="switchAdminTab('results')" id="adminTabResults" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-inactive whitespace-nowrap">
+              <i class="fa-solid fa-list-check ms-2"></i>النتائج
+            </button>
+            <button onclick="switchAdminTab('nominees')" id="adminTabNominees" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-inactive whitespace-nowrap">
+              <i class="fa-solid fa-users ms-2"></i>المرشحين
+            </button>
+            <button onclick="switchAdminTab('pending')" id="adminTabPending" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-inactive whitespace-nowrap">
+              <i class="fa-solid fa-clock ms-2"></i>طلبات الانضمام
+            </button>
+            <button onclick="switchAdminTab('approved')" id="adminTabApproved" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-inactive whitespace-nowrap">
+              <i class="fa-solid fa-circle-check ms-2"></i>المقبولين
+            </button>
+            <button onclick="switchAdminTab('users')" id="adminTabUsers" class="admin-tab-btn px-4 py-3 text-sm font-extrabold tab-inactive whitespace-nowrap hidden" data-admin-only>
+              <i class="fa-solid fa-user-shield ms-2"></i>المستخدمين
+            </button>
+          </div>
+
+          <!-- نجوم الأسبوع -->
+          <div id="adminPanelStars" class="admin-tab active">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <h3 class="text-xl font-extrabold mb-4">
+                <i class="fa-solid fa-star ms-2 text-naa-gold"></i> تغيير نجوم الأسبوع
+              </h3>
+              <form id="starsForm" class="grid gap-5 md:grid-cols-2" enctype="multipart/form-data">
+                <div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <p class="text-sm font-extrabold text-sky-200 mb-3">الفئة A</p>
+                  <label class="block text-xs font-extrabold text-white/80">الاسم</label>
+                  <input id="starAName" type="text" placeholder="اسم نجم الفئة A" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  <label class="block text-xs font-extrabold text-white/80 mt-3">الصورة</label>
+                  <input id="starAFile" type="file" accept="image/*"
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 focus-ring" />
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <p class="text-sm font-extrabold text-amber-100 mb-3">الفئة B</p>
+                  <label class="block text-xs font-extrabold text-white/80">الاسم</label>
+                  <input id="starBName" type="text" placeholder="اسم نجم الفئة B" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  <label class="block text-xs font-extrabold text-white/80 mt-3">الصورة</label>
+                  <input id="starBFile" type="file" accept="image/*"
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 focus-ring" />
+                </div>
+                <div class="md:col-span-2">
+                  <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-naa-sky px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                    <i class="fa-solid fa-floppy-disk"></i> حفظ نجوم الأسبوع
+                  </button>
+                </div>
+              </form>
+              <div id="starsFeedback" class="mt-4 hidden rounded-2xl border border-naa-green/40 bg-naa-green/15 px-4 py-3 text-sm font-extrabold text-emerald-100"></div>
+            </section>
+          </div>
+
+          <!-- النتائج -->
+          <div id="adminPanelResults" class="admin-tab">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <h3 class="text-xl font-extrabold mb-4">
+                <i class="fa-solid fa-list-check ms-2 text-naa-sky"></i> تحديث نتائج المباريات
+              </h3>
+              <form id="resultForm" class="grid gap-4 sm:grid-cols-2">
+                <div><label class="block text-sm font-extrabold">التاريخ</label>
+                  <input id="resDate" type="text" placeholder="مثال: 19 نيسان 2026" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" /></div>
+                <div><label class="block text-sm font-extrabold">النتيجة</label>
+                  <input id="resScore" type="text" placeholder="مثال: 2 — 0" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" /></div>
+                <div class="sm:col-span-2"><label class="block text-sm font-extrabold">المباراة</label>
+                  <input id="resMatch" type="text" placeholder="مثال: أشبال الجديدة vs فريق X" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" /></div>
+                <div class="sm:col-span-2"><label class="block text-sm font-extrabold">إنجاز / ملاحظة</label>
+                  <input id="resNote" type="text" placeholder="مثال: أفضل لاعب: ..." required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" /></div>
+                <div class="sm:col-span-2">
+                  <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-naa-sky to-naa-blue px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                    <i class="fa-solid fa-plus"></i> إضافة نتيجة
+                  </button>
+                </div>
+              </form>
+              <div id="resultsList" class="mt-6 overflow-hidden rounded-3xl border border-white/10 divide-y divide-white/10 bg-white/[0.03]"></div>
+            </section>
+          </div>
+
+          <!-- المرشحين -->
+          <div id="adminPanelNominees" class="admin-tab">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <h3 class="text-xl font-extrabold mb-4">
+                <i class="fa-solid fa-square-poll-vertical ms-2 text-naa-gold"></i> إدارة مرشحي التصويت
+              </h3>
+              <form id="nomineeForm" class="grid gap-4 sm:grid-cols-3" enctype="multipart/form-data">
+                <div class="sm:col-span-1">
+                  <label class="block text-sm font-extrabold">اسم اللاعب</label>
+                  <input id="nomineeName" type="text" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                </div>
+                <div class="sm:col-span-2">
+                  <label class="block text-sm font-extrabold">صورة اللاعب</label>
+                  <input id="nomineeFile" type="file" accept="image/*" required
+                    class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 focus-ring" />
+                </div>
+                <div class="sm:col-span-3">
+                  <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-naa-green px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                    <i class="fa-solid fa-plus"></i> إضافة المرشح
+                  </button>
+                </div>
+              </form>
+              <div id="nomineesAdminList" class="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3"></div>
+            </section>
+          </div>
+
+          <!-- طلبات الانضمام -->
+          <div id="adminPanelPending" class="admin-tab">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-clock text-yellow-400"></i>
+                <h3 class="text-xl font-extrabold">طلبات الانضمام — قيد الانتظار</h3>
+                <span id="pendingBadge" class="hidden text-xs font-extrabold bg-yellow-400/20 text-yellow-300 border border-yellow-400/30 rounded-xl px-2 py-0.5"></span>
+              </div>
+              <div class="overflow-x-auto rounded-3xl border border-white/10">
+                <table class="min-w-full text-sm">
+                  <thead class="border-b border-white/10 bg-yellow-500/20">
+                    <tr class="text-right">
+                      <th class="px-4 py-3 font-extrabold">الاسم</th>
+                      <th class="px-4 py-3 font-extrabold">رقم الهاتف</th>
+                      <th class="px-4 py-3 font-extrabold">تاريخ الميلاد</th>
+                      <th class="px-4 py-3 font-extrabold">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pendingTbody" class="divide-y divide-white/10 bg-white/[0.03]"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <!-- المقبولين -->
+          <div id="adminPanelApproved" class="admin-tab">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <div class="flex items-center gap-2 mb-4">
+                <i class="fa-solid fa-circle-check text-naa-gold"></i>
+                <h3 class="text-xl font-extrabold">قائمة المقبولين</h3>
+                <span id="approvedBadge" class="hidden text-xs font-extrabold bg-green-400/20 text-green-300 border border-green-400/30 rounded-xl px-2 py-0.5"></span>
+              </div>
+              <div class="overflow-x-auto rounded-3xl border border-white/10">
+                <table class="min-w-full text-sm">
+                  <thead class="border-b border-white/10 bg-naa-blue/35">
+                    <tr class="text-right">
+                      <th class="px-4 py-3 font-extrabold">الاسم</th>
+                      <th class="px-4 py-3 font-extrabold">رقم الهاتف</th>
+                      <th class="px-4 py-3 font-extrabold">تاريخ الميلاد</th>
+                      <th class="px-4 py-3 font-extrabold">الحالة</th>
+                      <th class="px-4 py-3 font-extrabold">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="studentsTbody" class="divide-y divide-white/10 bg-white/[0.03]"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+
+          <!-- المستخدمين (للمدير فقط) -->
+          <div id="adminPanelUsers" class="admin-tab">
+            <section class="rounded-3xl border border-white/10 bg-white/[0.04] p-6 shadow-soft">
+              <h3 class="text-xl font-extrabold mb-4">
+                <i class="fa-solid fa-users-gear ms-2 text-naa-gold"></i> إدارة المستخدمين
+              </h3>
+
+              <!-- إنشاء مدرب جديد -->
+              <div class="rounded-2xl border border-white/10 bg-black/25 p-4 mb-6">
+                <h4 class="text-sm font-extrabold mb-3">إنشاء مدرب جديد</h4>
+                <form id="createCoachForm" class="grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <label class="block text-xs font-extrabold text-white/80">الاسم</label>
+                    <input id="coachName" type="text" required
+                      class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-extrabold text-white/80">رقم الجوال</label>
+                    <input id="coachPhone" type="tel" required
+                      class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-extrabold text-white/80">كلمة المرور</label>
+                    <input id="coachPassword" type="password" required
+                      class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-extrabold text-white/80">نبذة</label>
+                    <input id="coachBio" type="text"
+                      class="mt-2 w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white focus-ring" />
+                  </div>
+                  <div class="sm:col-span-2">
+                    <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-naa-green px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                      <i class="fa-solid fa-user-plus"></i> إنشاء مدرب
+                    </button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- قائمة المستخدمين -->
+              <div class="overflow-x-auto rounded-3xl border border-white/10">
+                <table class="min-w-full text-sm">
+                  <thead class="border-b border-white/10 bg-naa-blue/35">
+                    <tr class="text-right">
+                      <th class="px-4 py-3 font-extrabold">الاسم</th>
+                      <th class="px-4 py-3 font-extrabold">رقم الجوال</th>
+                      <th class="px-4 py-3 font-extrabold">الدور</th>
+                      <th class="px-4 py-3 font-extrabold">تاريخ الإنشاء</th>
+                      <th class="px-4 py-3 font-extrabold">إجراء</th>
+                    </tr>
+                  </thead>
+                  <tbody id="usersTbody" class="divide-y divide-white/10 bg-white/[0.03]"></tbody>
+                </table>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <footer class="border-t border-white/10 bg-black/40">
+        <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>© <span id="year"></span> أكاديمية أشبال الجديدة</p>
+          <p>لوحة الإدارة • قاعدة بيانات SQLite</p>
+        </div>
+      </footer>
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-4 left-4 z-50 flex flex-col gap-2"></div>
+
+    <script>
+      const API_URL = (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') ? window.location.origin + '/api' : 'http://localhost:3000/api';
+      let currentUser = null;
+      let isAdmin = false;
+      let isCoach = false;
+
+      function getToken() { return localStorage.getItem('naa_token'); }
+      function getUser() { 
+        const user = localStorage.getItem('naa_user');
+        return user ? JSON.parse(user) : null;
+      }
+
+      async function api(endpoint, options = {}) {
+        const url = `${API_URL}${endpoint}`;
+        const token = getToken();
+        const isFormData = options.body instanceof FormData;
+        const headers = {
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+          ...(!isFormData && { 'Content-Type': 'application/json' }),
+          ...options.headers
+        };
+
+        const res = await fetch(url, { ...options, headers });
+        const data = await res.json().catch(() => ({}));
+
+        if (!res.ok) {
+          throw new Error(data.error || `خطأ ${res.status}`);
+        }
+        return data;
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const colors = {
+          success: 'border-green-500/50 bg-green-500/15 text-green-200',
+          error: 'border-red-500/50 bg-red-500/15 text-red-200',
+          info: 'border-naa-sky/50 bg-naa-sky/15 text-sky-200'
+        };
+        toast.className = `rounded-2xl border px-4 py-3 text-sm font-extrabold shadow-soft ${colors[type]}`;
+        toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info'} ms-2"></i>${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      function showFeedback(id, text, isError) {
+        const el = document.getElementById(id);
+        if (!el) return;
+        el.classList.remove('hidden');
+        el.textContent = text;
+        el.className = `mt-4 rounded-2xl border px-4 py-3 text-sm font-extrabold ${isError 
+          ? 'border-red-400/40 bg-red-500/10 text-red-100' 
+          : 'border-naa-green/40 bg-naa-green/15 text-emerald-100'}`;
+      }
+
+      function switchTab(tab) {
+        const loginPanel = document.getElementById('loginPanel');
+        const registerPanel = document.getElementById('registerPanel');
+        const tabLogin = document.getElementById('tabLogin');
+        const tabRegister = document.getElementById('tabRegister');
+
+        if (tab === 'login') {
+          loginPanel.classList.remove('hidden');
+          registerPanel.classList.add('hidden');
+          tabLogin.classList.add('tab-active'); tabLogin.classList.remove('tab-inactive');
+          tabRegister.classList.add('tab-inactive'); tabRegister.classList.remove('tab-active');
+        } else {
+          loginPanel.classList.add('hidden');
+          registerPanel.classList.remove('hidden');
+          tabLogin.classList.add('tab-inactive'); tabLogin.classList.remove('tab-active');
+          tabRegister.classList.add('tab-active'); tabRegister.classList.remove('tab-inactive');
+        }
+      }
+
+      function switchAdminTab(tab) {
+        document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.admin-tab-btn').forEach(t => {
+          t.classList.remove('tab-active');
+          t.classList.add('tab-inactive');
+        });
+
+        document.getElementById('adminPanel' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+        const btn = document.getElementById('adminTab' + tab.charAt(0).toUpperCase() + tab.slice(1));
+        btn.classList.add('tab-active');
+        btn.classList.remove('tab-inactive');
+
+        if (tab === 'users') renderUsersTable();
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // تسجيل الدخول
+      // ═══════════════════════════════════════════════════════════
+      document.getElementById('loginForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const phone = document.getElementById('loginPhone').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin ms-2"></i> جاري الدخول...';
+
+        try {
+          const data = await api('/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ phone, password })
+          });
+
+          localStorage.setItem('naa_token', data.token);
+          localStorage.setItem('naa_user', JSON.stringify(data.user));
+
+          showFeedback('loginFeedback', 'تم تسجيل الدخول بنجاح!', false);
+          setTimeout(() => location.reload(), 800);
+        } catch (err) {
+          showFeedback('loginFeedback', err.message, true);
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-lock ms-2"></i> تسجيل الدخول';
+        }
+      });
+
+      // ═══════════════════════════════════════════════════════════
+      // تسجيل لاعب جديد
+      // ═══════════════════════════════════════════════════════════
+      document.getElementById('playerForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const full_name = document.getElementById('playerName').value.trim();
+        const phone = document.getElementById('playerPhone').value.trim();
+        const dob = document.getElementById('playerDOB').value;
+        const password = document.getElementById('playerPassword').value;
+        const btn = e.target.querySelector('button[type="submit"]');
+
+        if (!full_name || !phone || !dob || !password) {
+          showFeedback('registerFeedback', 'جميع الحقول مطلوبة', true);
+          return;
+        }
+
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin ms-2"></i> جاري الإرسال...';
+
+        try {
+          await api('/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ name: full_name, phone, password })
+          });
+
+          await api('/registrations', {
+            method: 'POST',
+            body: JSON.stringify({ full_name, phone, dob })
+          });
+
+          showFeedback('registerFeedback', '✅ تم إرسال طلبك بنجاح! سيتم مراجعته من قِبَل المدرب.', false);
+          e.target.reset();
+          setTimeout(() => switchTab('login'), 2000);
+        } catch (err) {
+          showFeedback('registerFeedback', err.message, true);
+        }
+
+        btn.disabled = false;
+        btn.innerHTML = '<i class="fa-solid fa-paper-plane ms-2"></i> إرسال طلب الانضمام';
+      });
+
+      function logout() {
+        localStorage.removeItem('naa_token');
+        localStorage.removeItem('naa_user');
+        showToast('تم تسجيل الخروج', 'info');
+        setTimeout(() => location.reload(), 800);
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // التحقق من الجلسة
+      // ═══════════════════════════════════════════════════════════
+      async function checkSession() {
+        const user = getUser();
+        const token = getToken();
+
+        if (!token || !user) {
+          document.getElementById('authSection').classList.remove('hidden');
+          document.getElementById('adminSection').classList.add('hidden');
+          return;
+        }
+
+        try {
+          const me = await api('/auth/me');
+          currentUser = me;
+          isAdmin = me.role === 'admin';
+          isCoach = me.role === 'coach' || me.role === 'admin';
+
+          const userInfo = document.getElementById('userInfo');
+          const userName = document.getElementById('userName');
+          if (userInfo && userName) {
+            userInfo.classList.remove('hidden');
+            userInfo.classList.add('flex');
+            userName.textContent = me.name;
+          }
+
+          if (isCoach) {
+            document.getElementById('authSection').classList.add('hidden');
+            document.getElementById('adminSection').classList.remove('hidden');
+
+            if (isAdmin) {
+              document.querySelectorAll('[data-admin-only]').forEach(el => el.classList.remove('hidden'));
+            }
+
+            loadAdminData();
+          } else {
+            document.getElementById('authSection').classList.remove('hidden');
+            document.getElementById('adminSection').classList.add('hidden');
+            showToast('أهلاً بك! تم تسجيل الدخول بنجاح.', 'success');
+          }
+        } catch (err) {
+          logout();
+        }
+      }
+
+      async function loadAdminData() {
+        await Promise.all([
+          renderPendingTable(),
+          renderStudentsTable(),
+          renderResultsList(),
+          renderNomineesAdmin()
+        ]);
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // طلبات الانتظار
+      // ═══════════════════════════════════════════════════════════
+      async function renderPendingTable() {
+        const tbody = document.getElementById('pendingTbody');
+        const badge = document.getElementById('pendingBadge');
+
+        try {
+          const list = await api('/registrations/pending');
+
+          if (badge) {
+            if (list.length) { badge.textContent = list.length + ' طلب'; badge.classList.remove('hidden'); }
+            else badge.classList.add('hidden');
+          }
+
+          if (!list.length) {
+            tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-4 text-sm text-white/70 text-center">لا توجد طلبات معلّقة.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = '';
+          list.forEach((s) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/5 border-b border-white/5 last:border-0';
+            tr.innerHTML = `
+              <td class="px-4 py-3 font-bold">${s.full_name || '—'}</td>
+              <td class="px-4 py-3 text-white/70">${s.phone || '—'}</td>
+              <td class="px-4 py-3 text-white/70">${s.dob || '—'}</td>
+              <td class="px-4 py-3 flex gap-2">
+                <button onclick="approveStudent(${s.id}, this)" class="inline-flex items-center gap-1 rounded-2xl bg-green-600/80 border border-green-500/50 px-3 py-2 text-xs font-extrabold hover:bg-green-500 transition-all focus-ring">
+                  <i class="fa-solid fa-check"></i> قبول
+                </button>
+                <button onclick="rejectStudent(${s.id})" class="inline-flex items-center gap-1 rounded-2xl bg-red-600/60 border border-red-500/50 px-3 py-2 text-xs font-extrabold hover:bg-red-500 transition-all focus-ring">
+                  <i class="fa-solid fa-xmark"></i> رفض
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-4 text-sm text-red-300 text-center">${err.message}</td></tr>`;
+        }
+      }
+
+      async function approveStudent(id, btn) {
+        btn.disabled = true;
+        btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+        try {
+          await api(`/registrations/${id}/approve`, { method: 'POST' });
+          showToast('تم قبول الطلب', 'success');
+          await renderPendingTable();
+          await renderStudentsTable();
+        } catch (err) {
+          showToast(err.message, 'error');
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-check"></i> قبول';
+        }
+      }
+
+      async function rejectStudent(id) {
+        if (!confirm('هل تريد رفض هذا الطلب؟')) return;
+        try {
+          await api(`/registrations/${id}/reject`, { method: 'POST' });
+          showToast('تم رفض الطلب', 'info');
+          await renderPendingTable();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // المقبولين
+      // ═══════════════════════════════════════════════════════════
+      async function renderStudentsTable() {
+        const tbody = document.getElementById('studentsTbody');
+        const badge = document.getElementById('approvedBadge');
+
+        try {
+          const list = await api('/approved-players');
+
+          if (badge) {
+            if (list.length) { badge.textContent = list.length + ' لاعب'; badge.classList.remove('hidden'); }
+            else badge.classList.add('hidden');
+          }
+
+          if (!list.length) {
+            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-sm text-white/70 text-center">لا يوجد طلاب مقبولون بعد.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = '';
+          list.forEach((s) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/5 border-b border-white/5 last:border-0';
+            tr.innerHTML = `
+              <td class="px-4 py-3 font-bold">${s.full_name || '—'}</td>
+              <td class="px-4 py-3 text-white/70">${s.phone || '—'}</td>
+              <td class="px-4 py-3 text-white/70">${s.dob || '—'}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center gap-1 rounded-2xl bg-green-600/30 border border-green-500/40 px-3 py-1 text-xs font-extrabold text-green-300">
+                  <i class="fa-solid fa-circle-check"></i> مقبول
+                </span>
+              </td>
+              <td class="px-4 py-3">
+                <button onclick="deleteApproved(${s.id})" class="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-extrabold hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-sm text-red-300 text-center">${err.message}</td></tr>`;
+        }
+      }
+
+      async function deleteApproved(id) {
+        if (!confirm('هل تريد حذف هذا اللاعب من المقبولين؟')) return;
+        try {
+          await api(`/approved-players/${id}`, { method: 'DELETE' });
+          showToast('تم حذف اللاعب', 'info');
+          await renderStudentsTable();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // النتائج
+      // ═══════════════════════════════════════════════════════════
+      async function renderResultsList() {
+        const container = document.getElementById('resultsList');
+        try {
+          const results = await api('/results');
+
+          if (!results.length) {
+            container.innerHTML = '<div class="p-5 text-sm text-white/70 text-center">لا توجد نتائج بعد.</div>';
+            return;
+          }
+
+          container.innerHTML = '';
+          results.forEach((r) => {
+            const row = document.createElement('div');
+            row.className = 'flex flex-col gap-2 p-5 sm:flex-row sm:items-center sm:justify-between';
+            row.innerHTML = `
+              <div class="min-w-0">
+                <p class="text-sm font-extrabold text-white">${r.match_name || '—'}</p>
+                <p class="mt-1 text-xs text-white/60">${r.match_date || '—'} • <span class="font-extrabold text-naa-gold">${r.score || '—'}</span> • ${r.note || '—'}</p>
+              </div>
+              <button onclick="deleteResult(${r.id})" class="inline-flex items-center justify-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs font-extrabold hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all focus-ring">
+                <i class="fa-solid fa-trash"></i> حذف
+              </button>
+            `;
+            container.appendChild(row);
+          });
+        } catch (err) {
+          container.innerHTML = `<div class="p-5 text-sm text-red-300 text-center">${err.message}</div>`;
+        }
+      }
+
+      document.getElementById('resultForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await api('/results', {
+            method: 'POST',
+            body: JSON.stringify({
+              match_date: document.getElementById('resDate').value,
+              match_name: document.getElementById('resMatch').value,
+              score: document.getElementById('resScore').value,
+              note: document.getElementById('resNote').value
+            })
+          });
+          showToast('تم إضافة النتيجة', 'success');
+          e.target.reset();
+          await renderResultsList();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      });
+
+      async function deleteResult(id) {
+        if (!confirm('حذف النتيجة؟')) return;
+        try {
+          await api(`/results/${id}`, { method: 'DELETE' });
+          showToast('تم الحذف', 'info');
+          await renderResultsList();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // المرشحين
+      // ═══════════════════════════════════════════════════════════
+      async function renderNomineesAdmin() {
+        const container = document.getElementById('nomineesAdminList');
+        try {
+          const nominees = await api('/nominees');
+
+          if (!nominees.length) {
+            container.innerHTML = '<div class="col-span-full text-center text-white/60 py-4">لا يوجد مرشحون</div>';
+            return;
+          }
+
+          container.innerHTML = '';
+          nominees.forEach((n) => {
+            const card = document.createElement('div');
+            card.className = 'overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-soft';
+            card.innerHTML = `
+              <div class="relative">
+                <img src="${n.photo_url || 'assets/kids.png'}" class="h-36 w-full object-cover" loading="lazy" onerror="this.src='assets/kids.png'" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute bottom-3 right-3 left-3">
+                  <p class="text-sm font-extrabold truncate">${n.name}</p>
+                  <p class="mt-1 text-[11px] text-white/75">الأصوات: <span class="font-extrabold text-naa-gold">${n.votes_count || 0}</span></p>
+                </div>
+              </div>
+              <div class="p-3">
+                <button onclick="deleteNominee(${n.id})" class="w-full rounded-2xl border border-white/10 bg-white/5 px-3 py-2 text-xs font-extrabold hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all focus-ring">
+                  <i class="fa-solid fa-trash ms-1"></i> حذف المرشح
+                </button>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          container.innerHTML = `<div class="col-span-full text-center text-red-300 py-4">${err.message}</div>`;
+        }
+      }
+
+      document.getElementById('nomineeForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', document.getElementById('nomineeName').value);
+        formData.append('photo', document.getElementById('nomineeFile').files[0]);
+
+        try {
+          await api('/nominees', { method: 'POST', body: formData });
+          showToast('تم إضافة المرشح', 'success');
+          e.target.reset();
+          await renderNomineesAdmin();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      });
+
+      async function deleteNominee(id) {
+        if (!confirm('حذف المرشح وجميع أصواته؟')) return;
+        try {
+          await api(`/nominees/${id}`, { method: 'DELETE' });
+          showToast('تم الحذف', 'info');
+          await renderNomineesAdmin();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // نجوم الأسبوع
+      // ═══════════════════════════════════════════════════════════
+      document.getElementById('starsForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const weekStart = new Date().toISOString().split('T')[0];
+
+        try {
+          const formDataA = new FormData();
+          formDataA.append('category', 'A');
+          formDataA.append('player_name', document.getElementById('starAName').value);
+          formDataA.append('week_start', weekStart);
+          const fileA = document.getElementById('starAFile').files[0];
+          if (fileA) formDataA.append('photo', fileA);
+          await api('/weekly-stars', { method: 'POST', body: formDataA });
+
+          const formDataB = new FormData();
+          formDataB.append('category', 'B');
+          formDataB.append('player_name', document.getElementById('starBName').value);
+          formDataB.append('week_start', weekStart);
+          const fileB = document.getElementById('starBFile').files[0];
+          if (fileB) formDataB.append('photo', fileB);
+          await api('/weekly-stars', { method: 'POST', body: formDataB });
+
+          showFeedback('starsFeedback', 'تم حفظ نجوم الأسبوع بنجاح!', false);
+          e.target.reset();
+        } catch (err) {
+          showFeedback('starsFeedback', err.message, true);
+        }
+      });
+
+      // ═══════════════════════════════════════════════════════════
+      // إدارة المستخدمين (للمدير فقط)
+      // ═══════════════════════════════════════════════════════════
+      document.getElementById('createCoachForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        try {
+          await api('/coaches', {
+            method: 'POST',
+            body: JSON.stringify({
+              name: document.getElementById('coachName').value,
+              phone: document.getElementById('coachPhone').value,
+              password: document.getElementById('coachPassword').value,
+              bio: document.getElementById('coachBio').value
+            })
+          });
+          showToast('تم إنشاء المدرب بنجاح!', 'success');
+          e.target.reset();
+          await renderUsersTable();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      });
+
+      async function renderUsersTable() {
+        const tbody = document.getElementById('usersTbody');
+        try {
+          const users = await api('/users');
+
+          if (!users.length) {
+            tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-sm text-white/70 text-center">لا يوجد مستخدمون.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = '';
+          users.forEach((u) => {
+            const roleColors = { admin: 'text-red-300 bg-red-500/20 border-red-500/40', coach: 'text-sky-300 bg-sky-500/20 border-sky-500/40', user: 'text-green-300 bg-green-500/20 border-green-500/40' };
+            const roleLabels = { admin: 'مدير', coach: 'مدرب', user: 'لاعب' };
+
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/5 border-b border-white/5 last:border-0';
+            tr.innerHTML = `
+              <td class="px-4 py-3 font-bold">${u.name || '—'}</td>
+              <td class="px-4 py-3 text-white/70">${u.phone || '—'}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex items-center gap-1 rounded-2xl border px-3 py-1 text-xs font-extrabold ${roleColors[u.role] || roleColors.user}">
+                  ${roleLabels[u.role] || 'لاعب'}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-white/70 text-xs">${u.created_at ? new Date(u.created_at).toLocaleDateString('ar') : '—'}</td>
+              <td class="px-4 py-3">
+                ${u.role !== 'admin' ? `<button onclick="deleteUser(${u.id})" class="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-extrabold hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all"><i class="fa-solid fa-trash"></i></button>` : '—'}
+              </td>
+            `;
+            tbody.appendChild(tr);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-4 text-sm text-red-300 text-center">${err.message}</td></tr>`;
+        }
+      }
+
+      async function deleteUser(id) {
+        if (!confirm('هل تريد حذف هذا المستخدم؟')) return;
+        try {
+          await api(`/users/${id}`, { method: 'DELETE' });
+          showToast('تم حذف المستخدم', 'info');
+          await renderUsersTable();
+        } catch (err) {
+          showToast(err.message, 'error');
+        }
+      }
+
+      // ═══════════════════════════════════════════════════════════
+      // التشغيل
+      // ═══════════════════════════════════════════════════════════
+      document.getElementById('year').textContent = new Date().getFullYear();
+      checkSession();
+    </script>
+  </body>
+</html>

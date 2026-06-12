@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="أكاديمية أشبال الجديدة - معرض الوسائط" />
+    <title>معرض الوسائط | أكاديمية أشبال الجديدة</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              naa: { ink: "#0B0F14", blue: "#1e3a8a", sky: "#3b82f6", green: "#1B5E20", maroon: "#7A0C12", gold: "#d4af37" },
+            },
+            boxShadow: { soft: "0 16px 50px rgba(0,0,0,0.35)" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <style>
+      body { font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+      .focus-ring:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35); }
+      .media-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+      .media-card:hover { transform: translateY(-4px); box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+      .pinned-badge { animation: pulse-gold 2s infinite; }
+      @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); } 50% { box-shadow: 0 0 0 8px rgba(212, 175, 55, 0); } }
+      .admin-panel { display: none; }
+      .admin-panel.visible { display: block; }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-naa-ink text-white">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-naa-ink/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <a href="index.html" class="group inline-flex items-center gap-3 rounded-2xl px-2 py-2 hover:bg-white/5 focus-ring">
+          <span class="grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 shadow-soft">
+            <img src="assets/image_1.png" alt="Logo" class="h-full w-full object-contain p-1" />
+          </span>
+          <span class="leading-tight hidden sm:block">
+            <span class="block text-sm font-extrabold">أكاديمية أشبال الجديدة</span>
+            <span class="block text-xs text-white/70">معرض الوسائط</span>
+          </span>
+        </a>
+
+        <nav class="flex items-center gap-2">
+          <a href="index.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-gold transition-all">
+            <i class="fa-solid fa-house text-naa-gold"></i><span class="hidden md:inline">الرئيسية</span>
+          </a>
+          <a href="media.html" class="inline-flex items-center gap-2 rounded-xl border border-naa-sky bg-white/10 px-3 py-2 text-xs sm:text-sm font-extrabold shadow-soft">
+            <i class="fa-solid fa-photo-film text-naa-sky"></i><span class="hidden md:inline">المعرض</span>
+          </a>
+          <a href="register.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-green transition-all">
+            <i class="fa-solid fa-user-gear text-naa-green"></i><span class="hidden md:inline">التسجيل</span>
+          </a>
+        </nav>
+
+        <div id="userInfo" class="hidden items-center gap-2">
+          <span class="text-xs text-white/70" id="userName"></span>
+          <button onclick="logout()" class="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-extrabold hover:bg-white/10 transition-all">
+            <i class="fa-solid fa-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="border-b border-white/10 bg-gradient-to-b from-black to-naa-blue/20 py-12">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <header class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h1 class="text-4xl font-extrabold">معرض الوسائط</h1>
+              <p class="mt-2 text-white/70">نعرض لكم أحدث الصور والفيديوهات من التدريبات والمباريات.</p>
+            </div>
+            <button id="manageMediaBtn" onclick="toggleAdminPanel()" class="hidden inline-flex items-center gap-2 rounded-2xl bg-naa-green px-4 py-2 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring transition-all">
+              <i class="fa-solid fa-gear"></i> إدارة الميديا
+            </button>
+          </header>
+        </div>
+      </section>
+
+      <section id="adminPanel" class="admin-panel border-b border-white/10 bg-black/40 py-8">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 class="text-xl font-extrabold mb-6"><i class="fa-solid fa-screwdriver-wrench ms-2 text-naa-gold"></i> لوحة إدارة الوسائط</h2>
+          <div class="grid gap-6 lg:grid-cols-2">
+            <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <h3 class="text-lg font-extrabold mb-4"><i class="fa-solid fa-image ms-2 text-naa-sky"></i> رفع صورة</h3>
+              <form id="photoForm" class="grid gap-4" enctype="multipart/form-data">
+                <input id="photoTitle" type="text" placeholder="عنوان الصورة (اختياري)"
+                  class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                <input id="photoFile" type="file" accept="image/*" required
+                  class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 focus-ring" />
+                <label class="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+                  <input id="photoPinned" type="checkbox" class="rounded border-white/20 bg-black/40" />
+                  <span>تثبيت في الأعلى</span>
+                </label>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-naa-sky px-4 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring transition-all">
+                  <i class="fa-solid fa-upload"></i> إضافة الصورة
+                </button>
+              </form>
+            </div>
+            <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-6">
+              <h3 class="text-lg font-extrabold mb-4"><i class="fa-solid fa-video ms-2 text-naa-sky"></i> رفع فيديو</h3>
+              <form id="videoForm" class="grid gap-4" enctype="multipart/form-data">
+                <input id="videoTitle" type="text" placeholder="عنوان الفيديو (اختياري)"
+                  class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-white placeholder:text-white/35 focus-ring" />
+                <input id="videoFile" type="file" accept="video/*" required
+                  class="w-full rounded-2xl border border-white/10 bg-black/40 px-4 py-3 text-sm text-white/80 focus-ring" />
+                <label class="flex items-center gap-2 text-sm text-white/70 cursor-pointer">
+                  <input id="videoPinned" type="checkbox" class="rounded border-white/20 bg-black/40" />
+                  <span>تثبيت في الأعلى</span>
+                </label>
+                <button type="submit" class="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-l from-naa-sky to-naa-blue px-4 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring transition-all">
+                  <i class="fa-solid fa-upload"></i> إضافة الفيديو
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-12">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-extrabold flex items-center gap-2 mb-6">
+            <i class="fa-solid fa-circle-play text-naa-sky"></i> الفيديوهات
+          </h2>
+          <div id="videosGrid" class="grid gap-6 lg:grid-cols-3">
+            <div class="col-span-full rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+              <i class="fa-solid fa-spinner fa-spin text-naa-sky text-2xl"></i>
+              <p class="mt-2 text-sm text-white/60">جاري تحميل الفيديوهات...</p>
+            </div>
+          </div>
+          <p id="videosEmpty" class="mt-4 hidden text-sm text-white/65 italic text-center">لا توجد فيديوهات مرفوعة حالياً.</p>
+        </div>
+      </section>
+
+      <section class="py-12 border-t border-white/10">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <h2 class="text-2xl font-extrabold flex items-center gap-2 mb-6">
+            <i class="fa-solid fa-camera text-naa-gold"></i> معرض الصور
+          </h2>
+          <div id="photosGrid" class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            <div class="col-span-full rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+              <i class="fa-solid fa-spinner fa-spin text-naa-sky text-2xl"></i>
+              <p class="mt-2 text-sm text-white/60">جاري تحميل الصور...</p>
+            </div>
+          </div>
+          <p id="photosEmpty" class="mt-4 hidden text-sm text-white/65 italic text-center">لا توجد صور مرفوعة حالياً.</p>
+        </div>
+      </section>
+
+      <footer class="border-t border-white/10 bg-black/40 py-6 text-center text-xs text-white/60">
+        <p>© <span id="year"></span> أكاديمية أشبال الجديدة | معرض الوسائط</p>
+      </footer>
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-4 left-4 z-50 flex flex-col gap-2"></div>
+
+    <script>
+      const API_URL = (() => {
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          return window.location.origin + '/api';
+        }
+        return 'http://localhost:3000/api';
+      })();
+      let currentUser = null;
+      let isCoach = false;
+
+      function getToken() { return localStorage.getItem('naa_token'); }
+      function getUser() { 
+        const user = localStorage.getItem('naa_user');
+        return user ? JSON.parse(user) : null;
+      }
+
+      async function api(endpoint, options = {}) {
+        const url = `${API_URL}${endpoint}`;
+        const token = getToken();
+        const isFormData = options.body instanceof FormData;
+        const headers = {
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+          ...(!isFormData && { 'Content-Type': 'application/json' }),
+          ...options.headers
+        };
+
+        try {
+          const res = await fetch(url, { ...options, headers });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) throw new Error(data.error || `خطأ ${res.status}`);
+          return data;
+        } catch (err) {
+          if (err.message === 'Failed to fetch') {
+            throw new Error('الخادم غير متاح. تأكد من تشغيل npm start');
+          }
+          throw err;
+        }
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const colors = {
+          success: 'border-green-500/50 bg-green-500/15 text-green-200',
+          error: 'border-red-500/50 bg-red-500/15 text-red-200',
+          info: 'border-naa-sky/50 bg-naa-sky/15 text-sky-200'
+        };
+        toast.className = `rounded-2xl border px-4 py-3 text-sm font-extrabold shadow-soft ${colors[type]}`;
+        toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info'} ms-2"></i>${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      async function checkUser() {
+        const token = getToken();
+        const user = getUser();
+
+        if (token && user) {
+          try {
+            const me = await api('/auth/me');
+            currentUser = me;
+            isCoach = me.role === 'coach' || me.role === 'admin';
+
+            const userInfo = document.getElementById('userInfo');
+            const userName = document.getElementById('userName');
+            if (userInfo && userName) {
+              userInfo.classList.remove('hidden');
+              userInfo.classList.add('flex');
+              userName.textContent = me.name;
+            }
+            if (isCoach) document.getElementById('manageMediaBtn').classList.remove('hidden');
+          } catch (err) { logout(); }
+        }
+      }
+
+      function toggleAdminPanel() {
+        const panel = document.getElementById('adminPanel');
+        panel.classList.toggle('visible');
+      }
+
+      function logout() {
+        localStorage.removeItem('naa_token');
+        localStorage.removeItem('naa_user');
+        showToast('تم تسجيل الخروج', 'info');
+        setTimeout(() => location.reload(), 800);
+      }
+
+      async function renderVideos() {
+        const grid = document.getElementById('videosGrid');
+        const emptyMsg = document.getElementById('videosEmpty');
+
+        try {
+          const videos = await api('/media/videos');
+          if (!videos || videos.length === 0) {
+            grid.innerHTML = '';
+            emptyMsg.classList.remove('hidden');
+            return;
+          }
+          emptyMsg.classList.add('hidden');
+          grid.innerHTML = '';
+
+          videos.forEach(v => {
+            const card = document.createElement('article');
+            card.className = 'media-card overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04]';
+            const videoUrl = v.url.startsWith('http') ? v.url : API_URL.replace('/api', '') + v.url;
+            card.innerHTML = `
+              <div class="relative">
+                <video class="aspect-video w-full object-cover" controls src="${videoUrl}"></video>
+                ${v.is_pinned ? '<div class="absolute top-3 left-3 pinned-badge rounded-full bg-naa-gold/20 border border-naa-gold/40 px-2 py-1 text-xs font-extrabold text-naa-gold"><i class="fa-solid fa-thumbtack ms-1"></i> مثبت</div>' : ''}
+              </div>
+              <div class="p-4 flex items-center justify-between">
+                <p class="text-sm font-extrabold">${v.title || 'فيديو تدريبي'}</p>
+                ${isCoach ? `
+                  <div class="flex gap-2">
+                    <button onclick="togglePin('videos', ${v.id}, ${!v.is_pinned})" class="rounded-xl border border-white/10 bg-white/5 px-2 py-1 text-xs hover:bg-naa-gold/20 hover:border-naa-gold/40 transition-all" title="${v.is_pinned ? 'إلغاء التثبيت' : 'تثبيت'}">
+                      <i class="fa-solid fa-thumbtack ${v.is_pinned ? 'text-naa-gold' : 'text-white/40'}"></i>
+                    </button>
+                    <button onclick="deleteMedia('videos', ${v.id})" class="rounded-xl border border-white/10 bg-white/5 px-2 py-1 text-xs hover:bg-red-500/20 hover:border-red-500/40 hover:text-red-300 transition-all" title="حذف">
+                      <i class="fa-solid fa-trash text-white/40"></i>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+        } catch (err) {
+          grid.innerHTML = `<div class="col-span-full rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center"><p class="text-red-200">${err.message}</p></div>`;
+        }
+      }
+
+      async function renderPhotos() {
+        const grid = document.getElementById('photosGrid');
+        const emptyMsg = document.getElementById('photosEmpty');
+
+        try {
+          const photos = await api('/media/photos');
+          if (!photos || photos.length === 0) {
+            grid.innerHTML = '';
+            emptyMsg.classList.remove('hidden');
+            return;
+          }
+          emptyMsg.classList.add('hidden');
+          grid.innerHTML = '';
+
+          photos.forEach(p => {
+            const card = document.createElement('div');
+            card.className = 'media-card group relative aspect-square overflow-hidden rounded-3xl border border-white/10';
+            const photoUrl = p.url.startsWith('http') ? p.url : API_URL.replace('/api', '') + p.url;
+            card.innerHTML = `
+              <img src="${photoUrl}" class="h-full w-full object-cover transition duration-500 group-hover:scale-110" loading="lazy" alt="${p.title || 'صورة'}" />
+              <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div class="absolute bottom-2 right-2 left-2 flex items-center justify-between">
+                <span class="bg-black/60 px-2 py-1 rounded-lg text-[10px] font-extrabold">${p.title || 'صورة'}</span>
+                ${p.is_pinned ? '<span class="pinned-badge rounded-full bg-naa-gold/20 border border-naa-gold/40 px-2 py-0.5 text-[10px] font-extrabold text-naa-gold"><i class="fa-solid fa-thumbtack ms-1"></i></span>' : ''}
+              </div>
+              ${isCoach ? `
+                <div class="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <button onclick="togglePin('photos', ${p.id}, ${!p.is_pinned})" class="rounded-xl bg-black/60 border border-white/20 px-2 py-1 text-xs hover:bg-naa-gold/40 transition-all" title="${p.is_pinned ? 'إلغاء التثبيت' : 'تثبيت'}">
+                    <i class="fa-solid fa-thumbtack ${p.is_pinned ? 'text-naa-gold' : 'text-white'}"></i>
+                  </button>
+                  <button onclick="deleteMedia('photos', ${p.id})" class="rounded-xl bg-black/60 border border-white/20 px-2 py-1 text-xs hover:bg-red-500/40 transition-all" title="حذف">
+                    <i class="fa-solid fa-trash text-white"></i>
+                  </button>
+                </div>
+              ` : ''}
+            `;
+            grid.appendChild(card);
+          });
+        } catch (err) {
+          grid.innerHTML = `<div class="col-span-full rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center"><p class="text-red-200">${err.message}</p></div>`;
+        }
+      }
+
+      document.getElementById('photoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', document.getElementById('photoTitle').value);
+        formData.append('photo', document.getElementById('photoFile').files[0]);
+        formData.append('is_pinned', document.getElementById('photoPinned').checked ? 1 : 0);
+        try {
+          await api('/media/photos', { method: 'POST', body: formData });
+          showToast('تم إضافة الصورة بنجاح!', 'success');
+          e.target.reset();
+          await renderPhotos();
+        } catch (err) { showToast(err.message, 'error'); }
+      });
+
+      document.getElementById('videoForm').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append('title', document.getElementById('videoTitle').value);
+        formData.append('video', document.getElementById('videoFile').files[0]);
+        formData.append('is_pinned', document.getElementById('videoPinned').checked ? 1 : 0);
+        try {
+          await api('/media/videos', { method: 'POST', body: formData });
+          showToast('تم إضافة الفيديو بنجاح!', 'success');
+          e.target.reset();
+          await renderVideos();
+        } catch (err) { showToast(err.message, 'error'); }
+      });
+
+      async function togglePin(type, id, isPinned) {
+        try {
+          await api(`/media/${type}/${id}/pin`, { method: 'PATCH', body: JSON.stringify({ is_pinned: isPinned }) });
+          showToast(isPinned ? 'تم التثبيت' : 'تم إلغاء التثبيت', 'success');
+          if (type === 'photos') await renderPhotos(); else await renderVideos();
+        } catch (err) { showToast(err.message, 'error'); }
+      }
+
+      async function deleteMedia(type, id) {
+        if (!confirm('هل أنت متأكد من الحذف؟')) return;
+        try {
+          await api(`/media/${type}/${id}`, { method: 'DELETE' });
+          showToast('تم الحذف', 'info');
+          if (type === 'photos') await renderPhotos(); else await renderVideos();
+        } catch (err) { showToast(err.message, 'error'); }
+      }
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+      checkUser();
+      renderVideos();
+      renderPhotos();
+      setInterval(() => { renderVideos(); renderPhotos(); }, 30000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,505 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="أكاديمية أشبال الجديدة - الصفحة الرئيسية" />
+    <title>الصفحة الرئيسية | أكاديمية أشبال الجديدة</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              naa: { ink: "#0B0F14", blue: "#1e3a8a", sky: "#3b82f6", green: "#1B5E20", maroon: "#7A0C12", gold: "#d4af37" },
+            },
+            boxShadow: { soft: "0 16px 50px rgba(0,0,0,0.35)" },
+          },
+        },
+      };
+    </script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" referrerpolicy="no-referrer" />
+
+    <style>
+      body { font-family: "Cairo", system-ui, -apple-system, "Segoe UI", Arial, sans-serif; }
+      .focus-ring:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.35); }
+      .hero {
+        background-image: linear-gradient(
+            115deg, rgba(11, 15, 20, 0.88) 0%, rgba(30, 58, 138, 0.35) 55%, rgba(212, 175, 55, 0.18) 100%
+          ), url("kids.png");
+        background-size: cover; background-position: center;
+      }
+      .vote-btn { transition: all 0.3s ease; }
+      .vote-btn:hover { transform: translateY(-2px); }
+      .vote-count { font-variant-numeric: tabular-nums; }
+      @keyframes pulse-gold { 0%, 100% { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4); } 50% { box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); } }
+      .voted-indicator { animation: pulse-gold 2s infinite; }
+    </style>
+  </head>
+
+  <body class="min-h-screen bg-naa-ink text-white">
+    <header class="sticky top-0 z-50 border-b border-white/10 bg-naa-ink/80 backdrop-blur">
+      <div class="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6 lg:px-8">
+        <a href="index.html" class="group inline-flex items-center gap-3 rounded-2xl px-2 py-2 hover:bg-white/5 focus-ring">
+          <span class="grid h-11 w-11 place-items-center overflow-hidden rounded-2xl border border-white/10 bg-black/30 shadow-soft">
+            <img src="image_1.png" alt="شعار أكاديمية أشبال الجديدة" class="h-full w-full object-contain p-1" loading="eager" />
+          </span>
+          <span class="leading-tight hidden sm:block">
+            <span class="block text-sm font-extrabold">أكاديمية أشبال الجديدة</span>
+            <span class="block text-xs text-white/70">نظام إدارة متكامل</span>
+          </span>
+        </a>
+
+        <nav class="flex items-center gap-2">
+          <a href="index.html" class="inline-flex items-center gap-2 rounded-xl border border-naa-gold bg-white/10 px-3 py-2 text-xs sm:text-sm font-extrabold shadow-soft">
+            <i class="fa-solid fa-house text-naa-gold"></i><span>الرئيسية</span>
+          </a>
+          <a href="media.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-sky transition-all focus-ring">
+            <i class="fa-solid fa-photo-film text-naa-sky"></i><span>المعرض</span>
+          </a>
+          <a href="register.html" class="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-xs sm:text-sm font-extrabold hover:bg-white/10 hover:border-naa-green transition-all focus-ring">
+            <i class="fa-solid fa-user-gear text-naa-green"></i><span>التسجيل</span>
+          </a>
+        </nav>
+
+        <div id="userInfo" class="hidden items-center gap-2">
+          <span class="text-xs text-white/70" id="userName"></span>
+          <button onclick="logout()" class="rounded-xl border border-white/10 bg-white/5 px-3 py-1.5 text-xs font-extrabold hover:bg-white/10 transition-all">
+            <i class="fa-solid fa-right-from-bracket"></i> خروج
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero border-b border-white/10">
+        <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+          <div class="grid gap-8 md:grid-cols-2 md:items-center">
+            <div>
+              <p class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-black/30 px-4 py-2 text-xs font-extrabold text-white/85">
+                <span class="h-2 w-2 rounded-full bg-naa-green"></span> الصفحة الرئيسية
+              </p>
+              <h1 class="mt-4 text-4xl font-extrabold leading-tight sm:text-5xl">الصفحة الرئيسية</h1>
+              <p class="mt-3 text-white/75 leading-relaxed">هنا نكرّم المتألقين أسبوعيًا، ونفتح التصويت الشهري بطريقة تفاعلية، مع لوحة نتائج تُحدَّث من صفحة الإدارة.</p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href="register.html" class="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-l from-naa-sky to-naa-blue px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                  <i class="fa-solid fa-user-plus"></i> التسجيل ولوحة الإدارة
+                </a>
+                <a href="media.html" class="inline-flex items-center gap-2 rounded-2xl bg-gradient-to-l from-naa-sky to-naa-blue px-5 py-3 text-sm font-extrabold shadow-soft hover:brightness-110 focus-ring">
+                  <i class="fa-solid fa-photo-film"></i> معرض الوسائط
+                </a>
+              </div>
+            </div>
+
+            <div class="rounded-3xl border border-white/10 bg-black/25 p-6 shadow-soft">
+              <div class="flex flex-col items-center gap-4 text-center">
+                <img src="image_1.png" alt="شعار أكاديمية الأشبال الجديدة" class="h-40 w-40 rounded-3xl border border-white/10 bg-black/30 p-4 shadow-soft sm:h-44 sm:w-44" loading="eager" />
+                <div>
+                  <p class="text-xs font-extrabold tracking-wide text-naa-gold">أكاديمية الأشبال الجديدة</p>
+                </div>
+              </div>
+              <div class="mt-6 grid gap-3 sm:grid-cols-3">
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p class="text-sm font-extrabold">نجوم الأسبوع</p>
+                  <p class="mt-1 text-xs text-white/70">فئة أ / فئة ب</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p class="text-sm font-extrabold">تصويت الشهر</p>
+                  <p class="mt-1 text-xs text-white/70">تفاعلي + قاعدة بيانات</p>
+                </div>
+                <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+                  <p class="text-sm font-extrabold">النتائج</p>
+                  <p class="mt-1 text-xs text-white/70">تحديث من الإدارة</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-14">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div><h2 class="text-3xl font-extrabold">نجوم الأسبوع</h2></div>
+          </header>
+          <div id="starsContainer" class="mt-8 grid gap-6 md:grid-cols-2">
+            <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+              <i class="fa-solid fa-spinner fa-spin text-naa-sky text-2xl"></i>
+              <p class="mt-2 text-sm text-white/60">جاري تحميل نجوم الأسبوع...</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="border-y border-white/10 bg-black py-14">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <h2 class="text-3xl font-extrabold">تصويت لاعب الشهر</h2>
+              <p class="mt-2 text-white/70">اضغط "Vote" لزيادة صوت مرشحك. التصويت مرة واحدة فقط لكل مستخدم.</p>
+            </div>
+          </header>
+          <div id="nomineesGrid" class="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-3" aria-label="مرشحو لاعب الشهر">
+            <div class="col-span-full rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+              <i class="fa-solid fa-spinner fa-spin text-naa-sky text-2xl"></i>
+              <p class="mt-2 text-sm text-white/60">جاري تحميل المرشحين...</p>
+            </div>
+          </div>
+          <p id="voteHint" class="mt-5 text-xs text-white/60"></p>
+        </div>
+      </section>
+
+      <section class="py-14">
+        <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <header class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div><h2 class="text-3xl font-extrabold">النتائج المباشرة</h2></div>
+          </header>
+          <div class="mt-8 grid gap-6 lg:grid-cols-5 items-start">
+            <div class="lg:col-span-3">
+              <div class="overflow-x-auto rounded-3xl border border-white/10 bg-white/[0.04] shadow-soft">
+                <table class="min-w-full text-sm">
+                  <thead class="border-b border-white/10 bg-naa-blue/35">
+                    <tr class="text-right">
+                      <th class="px-4 py-3 font-extrabold">التاريخ</th>
+                      <th class="px-4 py-3 font-extrabold">المباراة</th>
+                      <th class="px-4 py-3 font-extrabold">النتيجة</th>
+                      <th class="px-4 py-3 font-extrabold hidden sm:table-cell">إنجاز/ملاحظة</th>
+                    </tr>
+                  </thead>
+                  <tbody id="resultsTbody" class="divide-y divide-white/10 text-white/90">
+                    <tr><td colspan="4" class="px-4 py-8 text-center text-white/60">جاري تحميل النتائج...</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <p class="mt-3 text-xs text-white/55">يتم تحديث المباريات في أوقات مختلفة الرجاء زيارتنا بشكل مستمر لمعرفة أحدث النتائج</p>
+            </div>
+            <aside class="lg:col-span-2">
+              <h3 class="text-lg font-extrabold text-naa-gold"><i class="fa-solid fa-bolt ms-2"></i> أحدث الإنجازات</h3>
+              <div id="achievementsList" class="mt-4 grid gap-4">
+                <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-4 text-center text-white/60">جاري التحميل...</div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <footer class="border-t border-white/10 bg-black/40">
+        <div class="mx-auto flex max-w-6xl flex-col gap-2 px-4 py-6 text-xs text-white/60 sm:flex-row sm:items-center sm:justify-between sm:px-6 lg:px-8">
+          <p>© <span id="year"></span> أكاديمية أشبال الجديدة</p>
+        </div>
+      </footer>
+    </main>
+
+    <div id="toastContainer" class="fixed bottom-4 left-4 z-50 flex flex-col gap-2"></div>
+
+    <script>
+      // ═══════════════════════════════════════════════════════════
+      // إعدادات API - تلقائية للاستضافة أو المحلي
+      // ═══════════════════════════════════════════════════════════
+      const API_URL = (() => {
+        // إذا كان الموقع على استضافة (HTTPS)
+        if (window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+          // استخدم نفس النطاق مع /api
+          return window.location.origin + '/api';
+        }
+        // محلي
+        return 'http://localhost:3000/api';
+      })();
+
+      function getToken() { return localStorage.getItem('naa_token'); }
+      function getUser() { 
+        const user = localStorage.getItem('naa_user');
+        return user ? JSON.parse(user) : null;
+      }
+
+      async function api(endpoint, options = {}) {
+        const url = `${API_URL}${endpoint}`;
+        const token = getToken();
+        const isFormData = options.body instanceof FormData;
+        const headers = {
+          ...(token && { 'Authorization': `Bearer ${token}` }),
+          ...(!isFormData && { 'Content-Type': 'application/json' }),
+          ...options.headers
+        };
+
+        try {
+          const res = await fetch(url, { ...options, headers });
+          const data = await res.json().catch(() => ({}));
+
+          if (!res.ok) {
+            throw new Error(data.error || `خطأ ${res.status}`);
+          }
+          return data;
+        } catch (err) {
+          if (err.message === 'Failed to fetch') {
+            throw new Error('الخادم غير متاح. تأكد من تشغيل npm start');
+          }
+          throw err;
+        }
+      }
+
+      function showToast(message, type = 'info') {
+        const container = document.getElementById('toastContainer');
+        const toast = document.createElement('div');
+        const colors = {
+          success: 'border-green-500/50 bg-green-500/15 text-green-200',
+          error: 'border-red-500/50 bg-red-500/15 text-red-200',
+          info: 'border-naa-sky/50 bg-naa-sky/15 text-sky-200'
+        };
+        toast.className = `rounded-2xl border px-4 py-3 text-sm font-extrabold shadow-soft ${colors[type]}`;
+        toast.innerHTML = `<i class="fa-solid ${type === 'success' ? 'fa-check' : type === 'error' ? 'fa-circle-xmark' : 'fa-circle-info'} ms-2"></i>${message}`;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 4000);
+      }
+
+      async function renderStars() {
+        const container = document.getElementById('starsContainer');
+        try {
+          const stars = await api('/weekly-stars');
+
+          if (!stars || stars.length === 0) {
+            container.innerHTML = `
+              <div class="col-span-full rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+                <i class="fa-solid fa-star text-naa-gold/40 text-4xl"></i>
+                <p class="mt-3 text-white/60">لم يتم اختيار نجوم الأسبوع بعد</p>
+              </div>`;
+            return;
+          }
+
+          container.innerHTML = '';
+          const categoryLabels = { A: 'الفئة A', B: 'الفئة B' };
+          const categoryColors = { A: 'border-naa-sky/40 bg-naa-sky/15 text-sky-200', B: 'border-naa-gold/40 bg-naa-gold/10 text-amber-100' };
+          const borderColors = { A: 'border-naa-gold/60', B: 'border-naa-sky/55' };
+          const gradients = { A: 'from-naa-blue/35 to-white/[0.04]', B: 'from-orange-500/20 to-transparent' };
+
+          stars.forEach(star => {
+            const cat = star.category;
+            const card = document.createElement('article');
+            card.className = `rounded-3xl border border-white/10 bg-gradient-to-b ${gradients[cat]} p-6 shadow-soft`;
+            card.innerHTML = `
+              <div class="flex items-center justify-between gap-3">
+                <span class="rounded-full border ${categoryColors[cat]} px-3 py-1 text-xs font-extrabold">${categoryLabels[cat]}</span>
+                <i class="fa-solid fa-star text-naa-gold"></i>
+              </div>
+              <div class="mt-5 flex items-center gap-5">
+                <img src="${star.photo_url || 'assets/kids.png'}" alt="صورة نجم الأسبوع" 
+                  class="h-28 w-28 rounded-2xl border-2 ${borderColors[cat]} object-cover shadow-soft" loading="lazy"
+                  onerror="this.src='assets/kids.png'" />
+                <div class="min-w-0">
+                  <p class="text-xs font-extrabold tracking-wide text-white/65">Star of the Week</p>
+                  <h3 class="mt-1 truncate text-2xl font-extrabold">${star.player_name || '—'}</h3>
+                  <p class="mt-2 text-sm text-white/70">نكرّم الالتزام والروح الرياضية والتطور الملحوظ خلال الأسبوع.</p>
+                </div>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+        } catch (err) {
+          container.innerHTML = `
+            <div class="col-span-full rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center">
+              <i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i>
+              <p class="mt-2 text-red-200">${err.message}</p>
+            </div>`;
+        }
+      }
+
+      let currentNominees = [];
+      let userVoted = false;
+      let userVoteNomineeId = null;
+
+      async function checkUserVote() {
+        const token = getToken();
+        if (!token) return;
+        try {
+          const data = await api('/votes/my-vote');
+          userVoted = data.voted;
+          userVoteNomineeId = data.vote?.nominee_id || null;
+        } catch (err) {
+          userVoted = false; userVoteNomineeId = null;
+        }
+      }
+
+      async function renderNominees() {
+        const grid = document.getElementById('nomineesGrid');
+        const hint = document.getElementById('voteHint');
+        const token = getToken();
+
+        try {
+          await checkUserVote();
+          const nominees = await api('/nominees');
+          currentNominees = nominees;
+
+          if (!nominees || nominees.length === 0) {
+            grid.innerHTML = `
+              <div class="col-span-full rounded-3xl border border-white/10 bg-white/[0.04] p-8 text-center">
+                <i class="fa-solid fa-users text-white/30 text-4xl"></i>
+                <p class="mt-3 text-white/60">لا يوجد مرشحون حالياً</p>
+              </div>`;
+            if (hint) hint.textContent = '';
+            return;
+          }
+
+          grid.innerHTML = '';
+          nominees.forEach((n) => {
+            const count = Number(n.votes_count || 0);
+            const isVotedByUser = userVoted && userVoteNomineeId === n.id;
+            const canVote = token && !userVoted;
+
+            const card = document.createElement('article');
+            card.className = `overflow-hidden rounded-3xl border border-white/10 bg-white/[0.04] shadow-soft transition hover:border-white/20 ${isVotedByUser ? 'voted-indicator' : ''}`;
+
+            card.innerHTML = `
+              <div class="relative">
+                <img src="${n.photo_url || 'assets/kids.png'}" alt="صورة المرشح ${n.name}" 
+                  class="h-44 w-full object-cover" loading="lazy" onerror="this.src='assets/kids.png'" />
+                <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent"></div>
+                <div class="absolute bottom-3 right-3 left-3">
+                  <p class="text-lg font-extrabold">${n.name}</p>
+                  <p class="mt-1 text-xs text-white/75">الأصوات: <span class="vote-count font-extrabold text-naa-gold" data-vote-count="${n.id}">${count}</span></p>
+                </div>
+                ${isVotedByUser ? '<div class="absolute top-3 left-3 rounded-full bg-naa-gold/20 border border-naa-gold/40 px-2 py-1 text-xs font-extrabold text-naa-gold"><i class="fa-solid fa-check ms-1"></i>صوتت</div>' : ''}
+              </div>
+              <div class="p-4">
+                ${isVotedByUser ? `
+                  <button type="button" onclick="cancelVote(${n.id})" 
+                    class="vote-btn w-full rounded-2xl border border-red-500/40 bg-red-500/20 px-4 py-3 text-sm font-extrabold text-red-200 hover:bg-red-500/30 focus-ring transition-all">
+                    <i class="fa-solid fa-rotate-left ms-2"></i> إلغاء التصويت
+                  </button>
+                ` : canVote ? `
+                  <button type="button" onclick="vote(${n.id})" 
+                    class="vote-btn w-full rounded-2xl bg-naa-sky px-4 py-3 text-sm font-extrabold hover:brightness-110 focus-ring">
+                    <i class="fa-solid fa-square-poll-vertical ms-2"></i> Vote
+                  </button>
+                ` : !token ? `
+                  <button type="button" onclick="location.href='register.html'" 
+                    class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-extrabold text-white/60 cursor-pointer hover:bg-white/10 transition-all">
+                    <i class="fa-solid fa-lock ms-2"></i> سجل الدخول للتصويت
+                  </button>
+                ` : `
+                  <button type="button" disabled 
+                    class="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm font-extrabold text-white/40 cursor-not-allowed">
+                    <i class="fa-solid fa-check ms-2"></i> تم التصويت مسبقاً
+                  </button>
+                `}
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          if (hint) {
+            if (!token) hint.textContent = 'سجل الدخول للمشاركة في التصويت.';
+            else if (userVoted) hint.textContent = 'لقد قمت بالتصويت. يمكنك إلغاء التصويت بالضغط على الزر أعلاه.';
+            else hint.textContent = 'اختر مرشحك واضغط Vote. تصويت واحد فقط لكل مستخدم.';
+          }
+        } catch (err) {
+          grid.innerHTML = `
+            <div class="col-span-full rounded-3xl border border-red-500/20 bg-red-500/10 p-8 text-center">
+              <i class="fa-solid fa-triangle-exclamation text-red-400 text-2xl"></i>
+              <p class="mt-2 text-red-200">${err.message}</p>
+            </div>`;
+        }
+      }
+
+      async function vote(nomineeId) {
+        try {
+          await api('/votes', { method: 'POST', body: JSON.stringify({ nominee_id: nomineeId }) });
+          showToast('تم التصويت بنجاح!', 'success');
+          await renderNominees();
+        } catch (err) {
+          showToast(err.message || 'خطأ في التصويت', 'error');
+        }
+      }
+
+      async function cancelVote(nomineeId) {
+        try {
+          await api('/votes/my-vote', { method: 'DELETE' });
+          showToast('تم إلغاء التصويت', 'success');
+          await renderNominees();
+        } catch (err) {
+          showToast(err.message || 'خطأ في إلغاء التصويت', 'error');
+        }
+      }
+
+      async function renderResults() {
+        const tbody = document.getElementById('resultsTbody');
+        const achievements = document.getElementById('achievementsList');
+
+        try {
+          const results = await api('/results');
+
+          if (!results || results.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-white/60">لا توجد نتائج بعد</td></tr>`;
+            achievements.innerHTML = `<div class="rounded-3xl border border-white/10 bg-white/[0.04] p-4 text-center text-white/60">لا توجد إنجازات بعد</div>`;
+            return;
+          }
+
+          tbody.innerHTML = '';
+          achievements.innerHTML = '';
+
+          results.slice(0, 6).forEach((r, idx) => {
+            const tr = document.createElement('tr');
+            tr.className = 'hover:bg-white/5';
+            tr.innerHTML = `
+              <td class="px-4 py-3 text-white/70">${r.match_date || '—'}</td>
+              <td class="px-4 py-3 font-bold">${r.match_name || '—'}</td>
+              <td class="px-4 py-3 font-extrabold text-naa-gold">${r.score || '—'}</td>
+              <td class="px-4 py-3 text-white/70 hidden sm:table-cell">${r.note || '—'}</td>
+            `;
+            tbody.appendChild(tr);
+
+            const card = document.createElement('div');
+            card.className = 'rounded-3xl border border-white/10 bg-gradient-to-l from-naa-gold/10 to-white/[0.03] p-4';
+            card.innerHTML = `
+              <p class="text-xs font-extrabold text-white/60">آخر تحديث #${idx + 1}</p>
+              <p class="mt-1 font-extrabold">${r.match_name || '—'}</p>
+              <p class="mt-1 text-sm text-white/70">${r.score || '—'} • ${r.note || '—'}</p>
+            `;
+            achievements.appendChild(card);
+          });
+        } catch (err) {
+          tbody.innerHTML = `<tr><td colspan="4" class="px-4 py-8 text-center text-red-300">${err.message}</td></tr>`;
+        }
+      }
+
+      function updateUserInfo() {
+        const user = getUser();
+        const userInfo = document.getElementById('userInfo');
+        const userName = document.getElementById('userName');
+
+        if (user && userInfo) {
+          userInfo.classList.remove('hidden');
+          userInfo.classList.add('flex');
+          userName.textContent = user.name;
+        } else if (userInfo) {
+          userInfo.classList.add('hidden');
+          userInfo.classList.remove('flex');
+        }
+      }
+
+      function logout() {
+        localStorage.removeItem('naa_token');
+        localStorage.removeItem('naa_user');
+        showToast('تم تسجيل الخروج', 'info');
+        setTimeout(() => location.reload(), 800);
+      }
+
+      document.getElementById('year').textContent = new Date().getFullYear();
+      updateUserInfo();
+
+      renderStars();
+      renderNominees();
+      renderResults();
+
+      setInterval(() => {
+        renderNominees();
+        renderResults();
+      }, 30000);
+    </script>
+  </body>
+</html>
